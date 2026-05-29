@@ -6,6 +6,7 @@ import { Screen } from '@/components/Screen';
 const links = [
   ['Data Toko', '/settings/toko'],
   ['Backup Data Toko', '/settings/backup'],
+  // ['Tentang', '/settings/about'],
   // ['Printer', '/settings/printer'],
   // ['Import Produk CSV', '/settings/import-products'],
   // ['Developer Tools', '/settings/developer'],

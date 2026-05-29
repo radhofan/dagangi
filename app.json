@@ -24,10 +24,17 @@
     },
     "plugins": [
       "expo-router",
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ff2fd98c-96ae-4b29-a8db-608645bd4a3b"
+      }
     }
   }
 }

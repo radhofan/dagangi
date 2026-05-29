@@ -2,21 +2,33 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { ActivationScreen } from '@/components/ActivationScreen';
 import { migrate } from '@/db/migrations';
 import { useSettingsStore } from '@/stores/settings.store';
 import { colors } from '@/theme';
+import { isActivated } from '@/utils/license';
 
 export default function RootLayout() {
   const [ready, setReady] = useState(false);
+  const [licenseReady, setLicenseReady] = useState(false);
+  const [activated, setActivated] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const loadSettings = useSettingsStore((state) => state.load);
 
   useEffect(() => {
+    isActivated()
+      .then((valid) => setActivated(valid))
+      .then(() => setLicenseReady(true))
+      .catch((err) => setError(err instanceof Error ? err.message : String(err)));
+  }, []);
+
+  useEffect(() => {
+    if (!activated) return;
     migrate()
       .then(loadSettings)
       .then(() => setReady(true))
       .catch((err) => setError(err instanceof Error ? err.message : String(err)));
-  }, [loadSettings]);
+  }, [activated, loadSettings]);
 
   if (error) {
     return (
@@ -25,6 +37,19 @@ export default function RootLayout() {
         <Text>{error}</Text>
       </View>
     );
+  }
+
+  if (!licenseReady) {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bg }}>
+        <ActivityIndicator color={colors.primary} />
+        <Text style={{ marginTop: 12, color: colors.muted }}>Memeriksa lisensi...</Text>
+      </View>
+    );
+  }
+
+  if (!activated) {
+    return <ActivationScreen onActivated={() => setActivated(true)} />;
   }
 
   if (!ready) {
@@ -66,6 +91,7 @@ export default function RootLayout() {
         <Stack.Screen name="settings/index" options={{ title: 'Pengaturan' }} />
         <Stack.Screen name="settings/toko" options={{ title: 'Toko' }} />
         <Stack.Screen name="settings/backup" options={{ title: 'Backup Data Toko' }} />
+        <Stack.Screen name="settings/about" options={{ title: 'Tentang' }} />
         <Stack.Screen name="settings/printer" options={{ title: 'Printer' }} />
         <Stack.Screen name="settings/import-products" options={{ title: 'Import Produk' }} />
         <Stack.Screen name="settings/developer" options={{ title: 'Developer Tools' }} />
