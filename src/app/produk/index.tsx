@@ -5,6 +5,7 @@ import { AppButton } from '@/components/AppButton';
 import { AppCard } from '@/components/AppCard';
 import { EmptyState } from '@/components/EmptyState';
 import { Screen } from '@/components/Screen';
+import { normalizeProductCategory } from '@/constants/productCategories';
 import { listProducts } from '@/services/product.service';
 import { Product } from '@/types/product';
 import { colors, spacing } from '@/theme';
@@ -28,7 +29,7 @@ export default function ProductsScreen() {
               <View style={styles.row}>
                 <View style={{ flex: 1 }}>
                   <Text style={[styles.name, !product.is_active && styles.inactive]}>{product.name}</Text>
-                  <Text style={styles.meta}>{product.category || 'Tanpa kategori'} • Stok {product.stock_qty} {product.unit}</Text>
+                  <Text style={styles.meta}>{normalizeProductCategory(product.category)} • Stok {product.stock_qty} {product.unit}</Text>
                   {product.stock_qty <= product.min_stock_qty ? <Text style={styles.warn}>Stok menipis</Text> : null}
                 </View>
                 <View>

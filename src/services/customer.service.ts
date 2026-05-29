@@ -21,7 +21,17 @@ export async function createCustomer(input: { name: string; phone?: string; addr
   const now = nowIso();
   await run(
     'INSERT INTO customers (id, name, phone, address, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [id, input.name.trim(), input.phone || null, input.address || null, input.note || null, now, now],
+    [id, input.name.trim(), input.phone?.trim() || null, input.address?.trim() || null, input.note?.trim() || null, now, now],
+  );
+  return getCustomer(id);
+}
+
+export async function updateCustomer(id: string, input: { name: string; phone?: string; address?: string; note?: string }) {
+  if (!input.name.trim()) throw new Error('Nama pelanggan wajib diisi');
+  const now = nowIso();
+  await run(
+    'UPDATE customers SET name = ?, phone = ?, address = ?, note = ?, updated_at = ? WHERE id = ?',
+    [input.name.trim(), input.phone?.trim() || null, input.address?.trim() || null, input.note?.trim() || null, now, id],
   );
   return getCustomer(id);
 }

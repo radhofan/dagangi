@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
 
 export function useRefresh<T>(loader: () => Promise<T>, deps: unknown[] = []) {
   const [data, setData] = useState<T | null>(null);
@@ -20,6 +21,12 @@ export function useRefresh<T>(loader: () => Promise<T>, deps: unknown[] = []) {
   useEffect(() => {
     refresh();
   }, [refresh]);
+
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh]),
+  );
 
   return { data, loading, error, refresh };
 }

@@ -5,10 +5,10 @@ import { Screen } from '@/components/Screen';
 
 const links = [
   ['Data Toko', '/settings/toko'],
-  ['Backup & Restore', '/settings/backup'],
-  ['Printer', '/settings/printer'],
-  ['Import Produk CSV', '/settings/import-products'],
-  ['Developer Tools', '/settings/developer'],
+  ['Backup Data Toko', '/settings/backup'],
+  // ['Printer', '/settings/printer'],
+  // ['Import Produk CSV', '/settings/import-products'],
+  // ['Developer Tools', '/settings/developer'],
 ] as const;
 
 export default function SettingsScreen() {

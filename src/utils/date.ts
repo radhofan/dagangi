@@ -5,7 +5,24 @@ export function nowIso() {
 }
 
 export function todayKey(date = new Date()) {
-  return date.toISOString().slice(0, 10);
+  return dateKey(date);
+}
+
+export function dateKey(date: Date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+export function localDayUtcRange(dateKeyValue: string) {
+  const [year, month, day] = dateKeyValue.split('-').map(Number);
+  const start = new Date(year, month - 1, day, 0, 0, 0, 0);
+  const end = new Date(year, month - 1, day + 1, 0, 0, 0, 0);
+  return {
+    startIso: start.toISOString(),
+    endIso: end.toISOString(),
+  };
 }
 
 export function compactDate(date: string | Date) {
@@ -23,5 +40,5 @@ export function startOfMonth(year: number, month: number) {
 }
 
 export function endOfMonth(year: number, month: number) {
-  return todayKey(new Date(year, month, 0));
+  return dateKey(new Date(year, month, 0));
 }

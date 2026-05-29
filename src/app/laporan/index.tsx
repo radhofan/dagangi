@@ -4,8 +4,9 @@ import { AppCard } from '@/components/AppCard';
 import { Screen } from '@/components/Screen';
 
 const links = [
-  ['Harian', '/laporan/harian'],
-  ['Bulanan', '/laporan/bulanan'],
+  ['Histori Penjualan', '/laporan/histori'],
+  ['Penjualan Hari Ini', '/laporan/harian'],
+  ['Ringkasan Bulanan', '/laporan/bulanan'],
   ['Stok Menipis', '/laporan/stok-menipis'],
   ['Hutang', '/laporan/hutang'],
 ] as const;

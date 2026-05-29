@@ -1,16 +1,19 @@
 import * as FileSystem from 'expo-file-system/legacy';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
-import { generateReceiptHtml, generateReceiptText } from '@/services/receipt.service';
+import { generateReceiptHtml } from '@/services/receipt.service';
 
-export async function shareReceipt(saleId: string) {
-  const text = await generateReceiptText(saleId);
-  const uri = `${FileSystem.documentDirectory}struk-${saleId}.txt`;
-  await FileSystem.writeAsStringAsync(uri, text);
-  if (await Sharing.isAvailableAsync()) {
-    await Sharing.shareAsync(uri, { mimeType: 'text/plain', dialogTitle: 'Bagikan Struk' });
+export async function shareReceipt(saleId: string, imageUri: string) {
+  const targetUri = `${FileSystem.documentDirectory}struk-${saleId}.jpg`;
+  const existing = await FileSystem.getInfoAsync(targetUri);
+  if (existing.exists) {
+    await FileSystem.deleteAsync(targetUri);
   }
-  return uri;
+  await FileSystem.copyAsync({ from: imageUri, to: targetUri });
+  if (await Sharing.isAvailableAsync()) {
+    await Sharing.shareAsync(targetUri, { mimeType: 'image/jpeg', dialogTitle: 'Bagikan Struk' });
+  }
+  return targetUri;
 }
 
 export async function printReceiptPreview(saleId: string) {

@@ -1,14 +1,15 @@
 import { useLocalSearchParams } from 'expo-router';
-import { Alert, Text } from 'react-native';
+import { useState } from 'react';
+import { Alert } from 'react-native';
 import { AppButton } from '@/components/AppButton';
 import { AppCard } from '@/components/AppCard';
 import { FormField } from '@/components/FormField';
 import { Screen } from '@/components/Screen';
+import { CustomerForm } from '@/app/hutang/customer/CustomerForm';
 import { getCustomer } from '@/services/customer.service';
 import { createManualDebt } from '@/services/debt.service';
 import { useRefresh } from '@/hooks/useRefresh';
-import { useState } from 'react';
-import { parseRupiahInput } from '@/utils/money';
+import { formatRupiahInput, parseRupiahInput } from '@/utils/money';
 
 export default function CustomerDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -29,12 +30,11 @@ export default function CustomerDetailScreen() {
 
   return (
     <Screen>
-      <AppCard title={data?.name ?? 'Pelanggan'}>
-        <Text>{data?.phone || 'Nomor HP belum diisi'}</Text>
-        <Text>{data?.address || ''}</Text>
+      <AppCard title="Edit Pelanggan">
+        {data ? <CustomerForm customer={data} /> : null}
       </AppCard>
       <AppCard title="Catat Hutang Manual">
-        <FormField label="Jumlah Hutang" value={amount} onChangeText={setAmount} keyboardType="numeric" />
+        <FormField label="Jumlah Hutang" value={amount} onChangeText={(value) => setAmount(formatRupiahInput(value))} keyboardType="numeric" />
         <FormField label="Catatan" value={note} onChangeText={setNote} multiline />
         <AppButton title="Simpan Hutang" onPress={saveDebt} />
       </AppCard>

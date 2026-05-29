@@ -1,10 +1,11 @@
 import { all, first, run } from '@/db/database';
+import { EXPENSE_CATEGORIES } from '@/constants/expenseCategories';
 import { Expense } from '@/types/expense';
 import { nowIso, todayKey } from '@/utils/date';
 import { createId } from '@/utils/id';
 import { expenseSchema } from '@/utils/validation';
 
-export const defaultExpenseCategories = ['Belanja Stok', 'Listrik', 'Sewa', 'Gaji', 'Transport', 'Lainnya'];
+export const defaultExpenseCategories = EXPENSE_CATEGORIES;
 
 export async function listExpenses(start?: string, end?: string) {
   return all<Expense>(

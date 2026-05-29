@@ -1,7 +1,7 @@
 import { exec, first, run, transaction } from '@/db/database';
 import { nowIso } from '@/utils/date';
 
-const CURRENT_SCHEMA_VERSION = 1;
+const CURRENT_SCHEMA_VERSION = 2;
 
 export async function migrate() {
   await exec('PRAGMA foreign_keys = ON;');
@@ -16,6 +16,9 @@ export async function migrate() {
   const version = row?.version ?? 0;
   if (version < 1) {
     await migration001();
+  }
+  if (version < 2) {
+    await migration002();
   }
 }
 
@@ -150,6 +153,7 @@ async function migration001() {
       shop_address: '',
       shop_phone: '',
       receipt_footer: 'Terima kasih sudah berbelanja',
+      receipt_logo_uri: '',
       allow_negative_stock: 'false',
       currency_symbol: 'Rp',
       printer_address: '',
@@ -160,7 +164,14 @@ async function migration001() {
       await run('INSERT OR IGNORE INTO app_settings (key, value, updated_at) VALUES (?, ?, ?)', [key, value, nowIso()]);
     }
 
-    await run('INSERT INTO schema_migrations (version, applied_at) VALUES (?, ?)', [CURRENT_SCHEMA_VERSION, nowIso()]);
+    await run('INSERT INTO schema_migrations (version, applied_at) VALUES (?, ?)', [1, nowIso()]);
+  });
+}
+
+async function migration002() {
+  await transaction(async () => {
+    await run('INSERT OR IGNORE INTO app_settings (key, value, updated_at) VALUES (?, ?, ?)', ['receipt_logo_uri', '', nowIso()]);
+    await run('INSERT INTO schema_migrations (version, applied_at) VALUES (?, ?)', [2, nowIso()]);
   });
 }
 

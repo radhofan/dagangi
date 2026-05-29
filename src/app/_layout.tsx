@@ -51,19 +51,21 @@ export default function RootLayout() {
         <Stack.Screen name="stok/movements/[productId]" options={{ title: 'Riwayat Stok' }} />
         <Stack.Screen name="hutang/index" options={{ title: 'Hutang' }} />
         <Stack.Screen name="hutang/customers" options={{ title: 'Pelanggan' }} />
+        <Stack.Screen name="hutang/customer/new" options={{ title: 'Tambah Pelanggan' }} />
         <Stack.Screen name="hutang/customer/[id]" options={{ title: 'Detail Pelanggan' }} />
         <Stack.Screen name="hutang/debt/[id]" options={{ title: 'Bayar Hutang' }} />
         <Stack.Screen name="pengeluaran/index" options={{ title: 'Pengeluaran' }} />
         <Stack.Screen name="pengeluaran/new" options={{ title: 'Tambah Pengeluaran' }} />
         <Stack.Screen name="pengeluaran/[id]" options={{ title: 'Edit Pengeluaran' }} />
         <Stack.Screen name="laporan/index" options={{ title: 'Laporan' }} />
-        <Stack.Screen name="laporan/harian" options={{ title: 'Laporan Harian' }} />
+        <Stack.Screen name="laporan/harian" options={{ title: 'Penjualan Hari Ini' }} />
+        <Stack.Screen name="laporan/histori" options={{ title: 'Histori Penjualan' }} />
         <Stack.Screen name="laporan/bulanan" options={{ title: 'Laporan Bulanan' }} />
         <Stack.Screen name="laporan/stok-menipis" options={{ title: 'Stok Menipis' }} />
         <Stack.Screen name="laporan/hutang" options={{ title: 'Laporan Hutang' }} />
         <Stack.Screen name="settings/index" options={{ title: 'Pengaturan' }} />
         <Stack.Screen name="settings/toko" options={{ title: 'Toko' }} />
-        <Stack.Screen name="settings/backup" options={{ title: 'Backup & Restore' }} />
+        <Stack.Screen name="settings/backup" options={{ title: 'Backup Data Toko' }} />
         <Stack.Screen name="settings/printer" options={{ title: 'Printer' }} />
         <Stack.Screen name="settings/import-products" options={{ title: 'Import Produk' }} />
         <Stack.Screen name="settings/developer" options={{ title: 'Developer Tools' }} />

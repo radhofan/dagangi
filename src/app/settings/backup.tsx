@@ -8,14 +8,14 @@ import { exportBackup, pickAndRestoreBackup } from '@/services/backup.service';
 export default function BackupScreen() {
   return (
     <Screen>
-      <AppCard title="Backup JSON">
+      <AppCard title="Backup Data Toko">
         <Text>Backup berisi produk, transaksi, hutang, pengeluaran, stok, dan pengaturan.</Text>
-        <AppButton title="Export Backup" onPress={() => exportBackup().then(() => Alert.alert('Backup dibuat', 'File backup siap dibagikan/disimpan.')).catch((err) => Alert.alert('Gagal backup', err.message))} />
+        <AppButton title="Export Data" onPress={() => exportBackup().then(() => Alert.alert('Backup dibuat', 'File backup siap dibagikan/disimpan.')).catch((err) => Alert.alert('Gagal backup', err.message))} />
         <AppButton
-          title="Restore Backup"
+          title="Import Data"
           variant="danger"
-          onPress={() => confirmDialog('Restore backup?', 'Data sekarang akan diganti dengan isi file backup.', () => {
-            pickAndRestoreBackup().then(() => Alert.alert('Restore selesai')).catch((err) => Alert.alert('Gagal restore', err.message));
+          onPress={() => confirmDialog('Restore dari backup?', 'Data sekarang akan diganti dengan isi file JSON backup yang dipilih.', () => {
+            pickAndRestoreBackup().then(() => Alert.alert('Restore selesai', 'Data toko sudah diganti dari file backup.')).catch((err) => Alert.alert('Gagal restore', err.message));
           })}
         />
       </AppCard>

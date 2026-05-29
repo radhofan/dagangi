@@ -7,7 +7,7 @@ import { productSchema } from '@/utils/validation';
 export type ProductInput = {
   name: string;
   barcode?: string | null;
-  category?: string | null;
+  category: string;
   unit: string;
   cost_price: number;
   retail_price: number;
@@ -28,6 +28,24 @@ export async function listProducts(query = '', onlyActive = false) {
   );
 }
 
+export async function listRecentlySoldProducts(limit = 3) {
+  return all<Product>(
+    `SELECT products.*
+     FROM products
+     JOIN (
+       SELECT product_id, MAX(created_at) as last_sold_at
+       FROM sale_items
+       WHERE product_id IS NOT NULL
+       GROUP BY product_id
+       ORDER BY last_sold_at DESC
+       LIMIT ?
+     ) recent ON recent.product_id = products.id
+     WHERE products.is_active = 1
+     ORDER BY recent.last_sold_at DESC`,
+    [limit],
+  );
+}
+
 export async function getProduct(id: string) {
   return first<Product>('SELECT * FROM products WHERE id = ?', [id]);
 }
@@ -44,7 +62,7 @@ export async function createProduct(input: ProductInput) {
       id,
       input.name,
       input.barcode || null,
-      input.category || null,
+      input.category,
       input.unit || 'pcs',
       input.cost_price,
       input.retail_price,
@@ -69,7 +87,7 @@ export async function updateProduct(id: string, input: ProductInput) {
     [
       input.name,
       input.barcode || null,
-      input.category || null,
+      input.category,
       input.unit || 'pcs',
       input.cost_price,
       input.retail_price,
